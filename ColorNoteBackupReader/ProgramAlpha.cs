@@ -18,7 +18,7 @@ namespace ColorNoteBackupReader
         // === ColorNote-backup-decryptor Github Reference ===
         // https://github.com/olejorgenb/ColorNote-backup-decryptor
 
-        public void Main(string[] args)
+        public void Alpha()
         {
             MD5 hash = MD5.Create();
             string salt = "ColorNote Fixed Salt";

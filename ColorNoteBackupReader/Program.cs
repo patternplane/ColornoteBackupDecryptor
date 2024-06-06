@@ -12,12 +12,11 @@ namespace ColorNoteBackupReader
         static readonly int NOTE_DATA_OFFSET = 28; // or 0 in last version
         static readonly string NOTE_DEFAULT_SALT = "ColorNote Fixed Salt";
 
-        static public void Main()
+        public void decyrpt(string passwordStr, string path, string outPath)
         {
-            byte[] password = Encoding.UTF8.GetBytes("passwordTest");
+            byte[] password = Encoding.UTF8.GetBytes(passwordStr);
             byte[] salt = Encoding.UTF8.GetBytes(NOTE_DEFAULT_SALT);
 
-            string path = Console.ReadLine();
             BinaryReader sr = new BinaryReader(new FileStream(path, FileMode.Open));
             List<byte> temp = new List<byte>();
             byte[] temp2;
@@ -28,7 +27,7 @@ namespace ColorNoteBackupReader
 
             byte[] plainText = new PBKDF1WithMD5And128AES_BC().Decrypt(password, salt, cipherText, NOTE_DATA_OFFSET);
             
-            StreamWriter sw = new StreamWriter(@"./결과.txt");
+            StreamWriter sw = new StreamWriter(outPath);
             if (plainText != null)
                 sw.Write(Encoding.UTF8.GetString(plainText));
             sw.Close();

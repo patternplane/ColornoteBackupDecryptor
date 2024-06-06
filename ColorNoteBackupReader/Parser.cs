@@ -38,12 +38,21 @@ namespace ColorNoteBackupReader
         public void parse(string inputPath, string outputPath, bool getTrashValue)
         {
             StreamReader sr = new StreamReader(inputPath);
-
             char[] rawData = sr.ReadToEnd().ToCharArray();
             sr.Close();
 
-            StreamWriter sw = new StreamWriter(outputPath);
+            parse(rawData, outputPath, getTrashValue);
+        }
 
+        public void parse(char[] input, string outputPath, bool getTrashValue)
+        {
+            StreamWriter sw = new StreamWriter(outputPath);
+            sw.Write(parse(input, getTrashValue));
+            sw.Close();
+        }
+
+        public char[] parse(char[] input, bool getTrashValue)
+        {
             newStr.Clear();
             trashStr.Clear();
             this.getTrashValue = getTrashValue;
@@ -52,7 +61,7 @@ namespace ColorNoteBackupReader
             bool escape = false;
             char lastchar = '\0';
 
-            foreach (char c in rawData)
+            foreach (char c in input)
             {
                 if (stateS.Count == 0)
                 {
@@ -319,9 +328,9 @@ namespace ColorNoteBackupReader
             }
             takeTrash();
 
-            sw.Write(newStr);
-
-            sw.Close();
+            char[] result = new char[newStr.Length];
+            newStr.CopyTo(0, result, 0, newStr.Length);
+            return result;
         }
     }
 }
